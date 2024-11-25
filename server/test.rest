@@ -1,0 +1,22 @@
+GET http://localhost:5000/users
+
+###
+POST http://localhost:5000/users/2
+Content-Type: application/json
+
+{
+    "username": "MaxPayne",
+    "email": "Max@gmail.com",
+    "password": "qwer1234"
+}
+
+###
+PUT http://localhost:5000/users/2
+Content-Type: application/json
+
+{
+    "username": "Billiam"
+}
+
+###
+DELETE http://localhost:5000/users/3
