@@ -1,7 +1,11 @@
 import React from 'react'
 
-export default function Home() {
+const Home = ({setAuth}) => {
   return (
-    <div>Home</div>
-  )
-}
+    <div>Home
+      <button onClick={() => setAuth(false)}>Log Out</button>
+    </div>
+  );
+};
+
+export default Home;

@@ -3,23 +3,19 @@ const cors = require('cors');
 const pool = require('./db');
 const app = express();
 const port = 5000;
-
 //middleware
 app.use(cors());
 app.use(express.json()); //req.body
 
 //ROUTES
-//Create a user
+// Register and Login
+app.use("/auth", require("./routes/jwtAuth"));
 
-app.post("/users", async (req, res) => {
-try {
-    const { username, email } = req.body;
-    const newUser = await pool.query("INSERT INTO users(username, email) VALUES($1, $2) RETURNING *", [username, email]);
-    res.status(200).send(`${username}, ${email}`);
-} catch (err) {
-    console.log(err);
-}
-});
+// Dashboard
+app.use("/dashboard", require("./routes/dashboard"));
+
+
+
 
 
 

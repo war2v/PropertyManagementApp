@@ -1,0 +1,2 @@
+GET http://localhost:5000/dashboard
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyM30sImlhdCI6MTczMzMyOTQ1NCwiZXhwIjoxNzMzNDE1ODU0fQ.AW3NgROemUAB6Vx_jeT1fWC7F265BR3efTK_h54FK34

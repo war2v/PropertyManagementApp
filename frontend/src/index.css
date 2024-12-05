@@ -3,5 +3,22 @@
 @tailwind utilities;
 
 #sign-up-button:hover {
-    background-color: blue;
+    background-color: rgb(209, 209, 255);
+}
+
+body {
+    background-color: rgb(30 41 59);
+}
+
+.hide{
+    display: none;
+}
+
+.fakehide {
+    visibility: hidden;
+}
+
+.seen{
+    visibility: visible;
+    color: green;
 }

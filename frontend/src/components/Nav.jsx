@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 const NavLinks = (props) => {
     const {toggleNavbar} = props
+   
     return (
         <ul className="flex gap-3">
             <li className="sm:inline hover:underline">
@@ -12,7 +13,7 @@ const NavLinks = (props) => {
             <li className="sm:inline hover:underline">
                 <NavLink to="/SignIn">Sign-In</NavLink>
             </li>
-            <li className="sm:inline hover:underline">
+            <li className={"sm:inline hover:underline"}>
                 <NavLink to="/SignUp">Sign-Up</NavLink>
             </li>
             <li>
@@ -27,6 +28,7 @@ const NavLinks = (props) => {
 
 export default function Nav() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
@@ -52,12 +54,12 @@ export default function Nav() {
             ) : (
                 <div>
                     <button onClick={toggleNavbar}>
-                        <i class="fa-solid fa-grip-lines"></i>
+                        <i className="fa-solid fa-grip-lines"></i>
                     </button>
                 </div>
             )
            }
-           <form className="flex items-center bg-slate-100 rounded">
+           <form className={isAuthenticated ? "flex items-center bg-slate-100 rounded" : "hide"}>
                 <input type="text" placeholder="Search A Property" className="bg-transparent text-slate-500 focus:outline-none"/>
                 <button type="submit">
                     <i className="text-slate-500 p-4 fa-solid fa-magnifying-glass"></i>
