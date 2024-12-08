@@ -1,13 +1,14 @@
-import React, {useRef, useEffect, useState} from 'react'
-import { Link } from 'react-router-dom'
+import React, {useRef, useEffect, useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%])[A-Za-z\d!@#$%]{8,25}$/;
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-const SignUp = ({setAuth}) => {
+const Registration = ({s_url, bottom_link, title, submit_redirect}) => {
   const userRef = useRef();
   const errRef = useRef();
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [validName, setValidName] = useState(false);
@@ -56,37 +57,41 @@ const SignUp = ({setAuth}) => {
     
     console.log(`valid match password: ${validMatchPassword}`)
     console.log(`match: ${match}`)
+    
   }, [password, matchPassword])
 
 
-useEffect(() => {
-  setErrMsg('');
-}, [username, password, matchPassword])
+    useEffect(() => {
+    setErrMsg('');
+    }, [username, password, matchPassword])
 
+    
 
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
-      const body = {username, email, password};
-      const response = await fetch("http://localhost:5000/auth/register",{
+        //console.log(submit_redirect);
+        const body = {username, email, password};
+        const response = await fetch(s_url,{
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
-      });
-      const parseRes = await response.json();
-      localStorage.setItem("token", parseRes.token);
-      setAuth(true);
-      console.log(parseRes)
-      window.location = "/SignIn";
+        });
+        
+        if(response.ok){
+          navigate(submit_redirect);
+        }
+        
+        
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   }
   
   return (
     <div className="flex flex-col items-center m-4 p-4 border h-screen">
       <div className="flex flex-col items-center p-4 bg-slate-100 rounded">
-        <h1>Sign-Up</h1>
+        <h1>{title}</h1>
         <p ref={errRef} className={errMsg ? "errmsg" : "hide"}></p>
         <form onSubmit={onSubmitForm} className="flex flex-col text-black bg-slate-100 w-96">
           <label htmlFor='username'>
@@ -190,11 +195,11 @@ useEffect(() => {
           </button>
         </form>
         <div>
-            <p className="font-bold">Have An Account? <Link className="text-blue-400" to={"../SignIn"}>Sign in here</Link></p>
+            <p className="font-bold">Have An Account? <Link className="text-blue-400" to={bottom_link}>Sign in here</Link></p>
         </div>
       </div>
     </div>
   )
 }
 
-export default SignUp;
+export default Registration;

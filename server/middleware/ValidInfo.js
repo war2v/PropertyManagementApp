@@ -24,6 +24,53 @@ module.exports = function(req, res, next) {
         } else if (!validUsername(username)) {
           return res.json("Invalid Username");
         }
+        break;
+      case "/manager-registration":
+        //console.log(!email.length);
+        if (![username, email, password].every(Boolean)) {
+          return res.json("Missing Credentials");
+        } else if (!validEmail(email)) {
+          return res.json("Invalid Email");
+        }
+        break;
+      case "/manager-login":
+        if (![username, password].every(Boolean)) {
+          return res.json("Missing Credentials");
+        } else if (!validUsername(username)) {
+          return res.json("Invalid Username");
+        }
+        break;
+      case "/owner-registration":
+        //console.log(!email.length);
+        if (![username, email, password].every(Boolean)) {
+          return res.json("Missing Credentials");
+        } else if (!validEmail(email)) {
+          return res.json("Invalid Email");
+        }
+        break;
+      case "/owner-login":
+        if (![username, password].every(Boolean)) {
+          return res.json("Missing Credentials");
+        } else if (!validUsername(username)) {
+          return res.json("Invalid Username");
+        }
+        break;
+      case "/tenant-registration":
+        //console.log(!email.length);
+        if (![username, email, password].every(Boolean)) {
+          return res.json("Missing Credentials");
+        } else if (!validEmail(email)) {
+          return res.json("Invalid Email");
+        }
+        break;
+      case "/tenant-login":
+        if (![username, password].every(Boolean)) {
+          return res.json("Missing Credentials");
+        } else if (!validUsername(username)) {
+          return res.json("Invalid Username");
+        }
+        break;
+
     } 
     
 

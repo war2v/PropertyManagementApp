@@ -2,8 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
 
-const NavLinks = (props) => {
-    const {toggleNavbar} = props
+const NavLinks = ({toggleNavbar}) => {
    
     return (
         <ul className="flex gap-3">
@@ -15,6 +14,8 @@ const NavLinks = (props) => {
             </li>
             <li className={"sm:inline hover:underline"}>
                 <NavLink to="/SignUp">Sign-Up</NavLink>
+            
+
             </li>
             <li>
                 <button onClick={toggleNavbar}>
@@ -26,9 +27,8 @@ const NavLinks = (props) => {
     );
 };
 
-export default function Nav() {
+export default function Nav({setAuth, isAuth}) {
     const [isOpen, setIsOpen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
@@ -50,6 +50,7 @@ export default function Nav() {
                 <NavLinks toggleNavbar={toggleNavbar}/>
                 
                 
+                
     
             ) : (
                 <div>
@@ -59,7 +60,7 @@ export default function Nav() {
                 </div>
             )
            }
-           <form className={isAuthenticated ? "flex items-center bg-slate-100 rounded" : "hide"}>
+           <form className={isAuth ? "flex items-center bg-slate-100 rounded" : "hide"}>
                 <input type="text" placeholder="Search A Property" className="bg-transparent text-slate-500 focus:outline-none"/>
                 <button type="submit">
                     <i className="text-slate-500 p-4 fa-solid fa-magnifying-glass"></i>

@@ -1,9 +1,14 @@
 import React from 'react'
 
 const Home = ({setAuth}) => {
+  const logout = e => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    setAuth(false);
+  }
   return (
     <div>Home
-      <button onClick={() => setAuth(false)}>Log Out</button>
+      <button className="bg-white rounded border" onClick={() => setAuth(false)}>Log Out</button>
     </div>
   );
 };
