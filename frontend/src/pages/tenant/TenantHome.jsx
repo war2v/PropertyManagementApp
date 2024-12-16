@@ -1,9 +1,9 @@
 import React from 'react'
 
-const TenantHome = ({setAuth}) => {
+const TenantHome = ({setAuthTenant}) => {
   return (
     <div>Tenant Home
-      <button className="bg-white rounded border" onClick={() => setAuth(false)}>Log Out</button>
+      <button className="bg-white rounded border" onClick={() => setAuthTenant(false)}>Log Out</button>
     </div>
   );
 };

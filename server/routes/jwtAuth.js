@@ -85,8 +85,8 @@ router.post("/tenant-registration", validInfo, async (req, res) => {
 
                 // add user to database
                 const newUser = await pool.query(
-                    "INSERT INTO tenants(username, email, _password) VALUES($1, $2, $3) RETURNING *", 
-                    [username, email, bcryptPassword]);
+                    "INSERT INTO tenants(username, email, _password, user_type) VALUES($1, $2, $3, $4) RETURNING *", 
+                    [username, email, bcryptPassword, 'T']);
                 
                 res.status(200).send("Tenant Account Created");
             
@@ -133,8 +133,8 @@ router.post("/owner-registration", validInfo, async (req, res) => {
 
                 // add user to database
                 const newUser = await pool.query(
-                    "INSERT INTO owners(username, email, _password) VALUES($1, $2, $3) RETURNING *", 
-                    [username, email, bcryptPassword]);
+                    "INSERT INTO owners(username, email, password, user_type) VALUES($1, $2, $3, $4) RETURNING *", 
+                    [username, email, bcryptPassword, 'O']);
                 
                 res.status(200).send("Owner Account Created");
             
@@ -182,8 +182,8 @@ router.post("/manager-registration", validInfo, async (req, res) => {
 
                 // add user to database
                 const newUser = await pool.query(
-                    "INSERT INTO managers(username, email, _password) VALUES($1, $2, $3) RETURNING *", 
-                    [username, email, bcryptPassword]);
+                    "INSERT INTO managers(username, email, _password, user_type) VALUES($1, $2, $3, $4) RETURNING *", 
+                    [username, email, bcryptPassword, 'M']);
                 
                 res.status(200).send("Manager Account Created");
             
@@ -211,20 +211,20 @@ router.post("/owner-login", validInfo, async (req, res) => {
             if (email.rows.length === 0) {
                 res.status(401).json("Username, Email or Password is incorrect")
             } else {
-                const validPassword = await bcrypt.compare(password, user.rows[0]._password);
+                const validPassword = await bcrypt.compare(password, email.rows[0].password);
                 if (!validPassword) {
                     return res.status(401).json("Username, Email or Password is incorrect");
                 }
-                const token = jwtGenerator(user.rows[0].id);
+                const token = jwtGenerator(email.rows[0].id, email.rows[0].user_type);
                 //console.log(token);
                 res.json({token});
             }
         }else {
-            const validPassword = await bcrypt.compare(password, user.rows[0]._password);
+            const validPassword = await bcrypt.compare(password, user.rows[0].password);
             if (!validPassword) {
                 return res.status(401).json("Username, Email or Password is incorrect");
             }
-            const token = jwtGenerator(user.rows[0].id);
+            const token = jwtGenerator(user.rows[0].id, user.rows[0].user_type);
             //console.log(token);
             res.json({token});
         }
@@ -249,11 +249,11 @@ router.post("/tenant-login", validInfo, async (req, res) => {
             if (email.rows.length === 0) {
                 res.status(401).json("Username, Email or Password is incorrect")
             } else {
-                const validPassword = await bcrypt.compare(password, user.rows[0]._password);
+                const validPassword = await bcrypt.compare(password, email.rows[0]._password);
                 if (!validPassword) {
                     return res.status(401).json("Username, Email or Password is incorrect");
                 }
-                const token = jwtGenerator(user.rows[0].id);
+                const token = jwtGenerator(email.rows[0].id, user.rows[0].user_type);
                 //console.log(token);
                 res.json({token});
             }        
@@ -262,7 +262,7 @@ router.post("/tenant-login", validInfo, async (req, res) => {
             if (!validPassword) {
                 return res.status(401).json("Username, Email or Password is incorrect");
             }
-            const token = jwtGenerator(user.rows[0].id);
+            const token = jwtGenerator(user.rows[0].id, user.rows[0].user_type);
             //console.log(token);
             res.json({token});
         }
@@ -291,7 +291,7 @@ router.post("/manager-login", validInfo, async (req, res) => {
                 if (!validPassword) {
                     return res.status(401).json("Username, Email or Password is incorrect");
                 }
-                const token = jwtGenerator(email.rows[0].id);
+                const token = jwtGenerator(email.rows[0].id, email.rows[0].user_type);
                 //console.log(token);
                 res.json({token});
             }  
@@ -301,8 +301,8 @@ router.post("/manager-login", validInfo, async (req, res) => {
             if (!validPassword) {
                 return res.status(401).json("Username, Email or Password is incorrect");
             }
-            const token = jwtGenerator(user.rows[0].id);
-            console.log(user);
+            const token = jwtGenerator(user.rows[0].id, user.rows[0].user_type);
+            console.log(user.id);
             res.json({token});
         }
         
@@ -340,7 +340,7 @@ router.post("/login", validInfo, async (req, res) => {
             return res.status(401).json("Username or Password incorrect");
         }
 
-        const token = jwtGenerator(user.rows[0].id);
+        const token = jwtGenerator(user.rows[0].id, user.rows[0].user_type);
         console.log(token);
         res.json({token}); 
         //res.status(200).send(`${username}, ${email}, ${password}`);
@@ -352,7 +352,7 @@ router.post("/login", validInfo, async (req, res) => {
     });
 
 
-router.post("/is-verify", authorization, async (req, res) => {
+router.post("/is-verify-owner", authorization, async (req, res) => {
     try {
         res.json(true);
     } catch (err) {
@@ -362,4 +362,23 @@ router.post("/is-verify", authorization, async (req, res) => {
 
 });
 
+router.post("/is-verify-tenant", authorization, async (req, res) => {
+    try {
+        res.json(true);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error");
+    }
+
+});
+
+router.post("/is-verify-manager", authorization, async (req, res) => {
+    try {
+        res.json(true);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error");
+    }
+
+});
 module.exports = router;

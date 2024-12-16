@@ -45,8 +45,8 @@ const LoginForm = ({setAuth, s_url, title, bottom_link, submit_redirect}) => {
   }
   
   return (
-    <div className="flex flex-col items-center m-4 p-4 border h-screen">
-      <div className="flex flex-col items-center p-4 bg-slate-100 rounded">
+    <div className="flex flex-col items-center h-screen">
+      <div className="flex flex-col text-black items-center p-4 m-4 bg-slate-100 border rounded">
         <h1>{title}</h1>
         <p ref={errRef} className={errMsg ? "errmsg" : "hide"}></p>
         <form onSubmit={onSubmitForm} className="flex flex-col text-black bg-slate-100 w-96">
@@ -73,7 +73,7 @@ const LoginForm = ({setAuth, s_url, title, bottom_link, submit_redirect}) => {
             required
           />
           <button 
-            className="rounded p-2 mt-4 border w-max self-center"
+            className="hover:bg-slate-300 rounded px-4 p-2 mt-4 border w-max self-center"
             type="submit" 
             value="Submit"
             id="sign-up-button">
