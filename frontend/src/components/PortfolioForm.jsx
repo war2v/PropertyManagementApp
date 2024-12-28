@@ -1,10 +1,29 @@
 import {React, useEffect, useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-export default function PortfolioForm() {
-
-    const [name, setName] = useState('');
+export default function PortfolioForm({submit_redirect}) {
+  const navigate = useNavigate();
     const [owner1, setOwner1] = useState('');
+    
+    async function getEmail () {
+      try {
+        const response = await fetch("http://localhost:5000/dashboard/create-portfolio",{
+          method: "GET",
+          headers: { token: localStorage.token }
+        });
+
+        const parseRes = await response.json();
+        setOwner1(parseRes.email)
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    useEffect(() =>{
+      getEmail();
+    });
+
+    const [name, setName] = useState("");
     const [owner2, setOwner2] = useState('');
     const [owner3, setOwner3] = useState('');
     const [owner4, setOwner4] = useState('');
@@ -42,8 +61,8 @@ export default function PortfolioForm() {
             className="bg-slate-100 focus:outline-none p-2 mt-4 border" 
             type="text" 
             name="name" 
-            placeholder="Portfolio Name" 
             onChange={(e) => setName(e.target.value)}
+            placeholder="Portfolio Name" 
             id='name'
             autoComplete='off'
             aria-describedby='uidnote'
@@ -54,10 +73,10 @@ export default function PortfolioForm() {
             className="bg-slate-100 focus:outline-none p-2 mt-4 border" 
             type="text" 
             name="owner1" 
-            onChange={(e) => setOwner1(e.target.value)}
+            value={owner1}
             placeholder="owner email" 
             aria-describedby = "pwdnote"
-            required
+            disabled
           />
           2. <input 
             className="bg-slate-100 focus:outline-none p-2 mt-4 border" 

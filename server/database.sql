@@ -87,7 +87,7 @@ CREATE TABLE managers(
  
 CREATE TYPE phone_type AS ENUM ('cell', 'home', 'work');
 CREATE TYPE income_type AS ENUM ('weekly', 'biweekly', 'monthly', 'yearly');
-CREATE TYPE property_types AS ENUM ('Con-Condo', 'Bare Land Condo', 'Commericial', 'other');
+CREATE TYPE property_types AS ENUM ('Con-Condo', 'Bare Land Condo', 'Comercial', 'other');
 CREATE TYPE property_styles AS ENUM ('Duples', 'Townhouse', 'Carriage Style', 'Low-Rise');
 
 CREATE TABLE occupants(id SERIAL PRIMARY KEY,  _name UNIQUE VARCHAR(255), relationship VARCHAR(255), occupation VARCHAR(255), age VARCHAR(255));

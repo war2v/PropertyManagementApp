@@ -12,6 +12,8 @@ import SignUp from './pages/auth/SignUp'
 import Footer from './components/Footer';
 import Nav from './components/Nav'
 import CreatePortfolio from './pages/owner/CreatePortfolio';
+import AddProperty from './pages/owner/AddProperty';
+import DisplayPortfolio from './pages/owner/DIsplayPortfolio';
 
 
 
@@ -97,7 +99,7 @@ export default function App() {
         <Nav isAuthOwner={isAuthenticatedOwner} setAuthOwner={setAuthOwner}
              isAuthTenant={isAuthenticatedTenant} setAuthTenant={setAuthTenant}
              isAuthManager={isAuthenticatedManager} setAuthManager={setAuthManager}/>
-        <div className="bg-blue-300 h-screen text-white">
+        <div className="bg-blue-300 h-max text-white">
           <Routes>
 
             <Route
@@ -147,8 +149,17 @@ export default function App() {
 
             <Route 
               path="/portfolio-registration" 
-              element={isAuthenticatedOwner ? (<CreatePortfolio setAuth={setAuthOwner}/>) : 
-              (<SignIn setAuth={setAuthOwner} bottom_link="../owner-registration" title="Owner Login" submit_redirect="../owner-home"/>)}/>
+              element={isAuthenticatedOwner ? (<CreatePortfolio setAuth={setAuthOwner} submit_redirect={"/owner-home"}/>) : 
+              (<Navigate to="/owner-login" setAuth={setAuthOwner}/>)}/>
+
+            <Route
+            path="/property-registration/:p_name"
+            element={isAuthenticatedOwner ? (<AddProperty setAuth={setAuthOwner} submit_redirect="/owner-home"/>) : 
+            (<Navigate to="/owner-login" setAuth={setAuthOwner}/>)}/>
+
+            <Route
+            path="/portfolio/:p_name"
+            element={isAuthenticatedOwner ? (<DisplayPortfolio/>) : (<Navigate to="/owner-login" setAuth={setAuthOwner}/>)}/>
 
             <Route 
               path="/About" 

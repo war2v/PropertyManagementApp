@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <div className="bg-blue-300 text-white h-full border-2 justify-center">
+    <div className="bg-blue-300 text-white py-4 h-full border-2 justify-center">
         <table className="m-auto text-center table-auto">
             <thead>
                 <tr>
