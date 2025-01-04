@@ -43,17 +43,17 @@ export default function PortfolioForm({submit_redirect}) {
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body)
           });
-          const parseRes = await response.json();
-          console.log(parseRes.token);
-          localStorage.setItem("token", parseRes.token);
-          navigate(submit_redirect);
+          if(response.ok){
+            navigate("/owner-home");
+          }
+          
         } catch (err) {
           console.error(err)
         }
       }
 
   return (
-    <div className="flex flex-col items-center h-screen">
+    <div className="m-auto w-screen flex flex-col items-center">
       <div className="flex flex-col text-black items-center p-4 m-4 bg-slate-100 border rounded">
         <h1>Create Portfolio</h1>
         <form onSubmit={onSubmitForm} className="flex flex-col text-black bg-slate-100 w-96">
@@ -115,13 +115,26 @@ export default function PortfolioForm({submit_redirect}) {
             onChange={(e) => setOwner5(e.target.value)}
             
           />
-          <button 
-            className="hover:bg-slate-300 rounded px-4 p-2 mt-4 border w-max self-center"
-            type="submit" 
-            value="Submit"
-            id="sign-up-button">
-            Continue
-          </button>
+          <div className="flex justify-center space-x-2">
+            <button 
+              className="hover:bg-blue-300 bg-blue-700 text-white rounded-lg px-4 p-2 mt-4 border w-max self-center"
+              type="submit" 
+              value="Submit"
+              id="sign-up-button">
+              Continue
+            </button>
+              <button 
+              className="hover:bg-blue-300 bg-blue-700 text-white rounded-lg px-4 p-2 mt-4 border w-max self-center"
+              type="submit" 
+              value="Submit"
+              id="sign-up-button">
+                <Link to="/owner-home"> 
+                  Back to Dashboard
+                </Link>
+            </button>
+          </div>
+          
+          
         </form>
       </div>
     </div>

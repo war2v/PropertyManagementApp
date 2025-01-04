@@ -79,9 +79,11 @@ router.post("/create-portfolio", authorization, async(req, res) => {
         if (p_exists.rows === 0) {
             res.json("Name in use");
         } 
-        const portfolio = pool.query("INSERT INTO portfolios(p_name, owner_id_1) VALUES($1, $2)",
+        const portfolio = pool.query("INSERT INTO portfolios(p_name, owner_id_1) VALUES($1, $2) RETURNING *;",
                 [name, owner_1.rows[0].id]
             );
+
+        res.status(200);
         
     } catch (err) {
         console.log(err)
@@ -97,10 +99,36 @@ router.post("/create-property", authorization, async(req, res) => {
         );
         console.log(portfolio.rows[0].id);
         
-        const property = await pool.query("INSERT INTO properties(portfolio_id, _address, city, _state, zip, country, property_type, property_style, bedrooms, bathrooms, square_feet, lot_size, year_build, market_value, purchase_date, _status, _description) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *", 
+        const property = await pool.query("INSERT INTO properties(portfolio_id, _address, city, _state, zip, country, property_type, property_style, bedrooms, bathrooms, square_feet, lot_size, year_build, market_value, purchase_date, _status, _description) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *;", 
             [portfolio.rows[0].id, address, city, state, zip, country, propertyType, propertyStyle, bedrooms, bathrooms, squareFt, lotSize, yearBuild, marketValue, purchaseDate, _status="Acitve", description]
         );
-        
+        res.status(200);
+    } catch (err) {
+        console.log(err);
+    }
+    
+});
+
+router.get("/owner-total-properties", authorization, async(req, res) => {
+    try {
+       const jwtToken = req.header("token"); 
+       const payload = jwt.verify(jwtToken, process.env.JWTSECRET);
+       const user_id = payload.user.id
+       const portfolios = await pool.query("SELECT * FROM portfolios WHERE owner_id_1 = $1;", [user_id]);
+       let total_properties = 0;
+       let port_map = new Map();
+       for(let i = 0; i<portfolios.rows.length; i++){
+        let properties = await pool.query("SELECT * FROM properties WHERE portfolio_id = $1;", [portfolios.rows[i].id])
+        //console.log(properties.rows.length)
+        port_map.set(portfolios.rows[i].p_name, properties.rows.length);
+        total_properties += properties.rows.length;
+       }
+       port_map.set("total_props", total_properties);
+       port_map.set("total_ports", portfolios.rows.length);
+       console.log(port_map);
+       const obj = Object.fromEntries(port_map);
+
+       res.json(obj);
     } catch (err) {
         console.log(err);
     }

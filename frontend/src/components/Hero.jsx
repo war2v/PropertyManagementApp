@@ -25,7 +25,7 @@ export default function Hero() {
 
       </div>
       <div className='flex justify-center py-4 my-4'>
-        <div classname="py-4">
+        <div className="py-4">
             <h1 className="text-5xl">
                 Find Your Next Home
             </h1>

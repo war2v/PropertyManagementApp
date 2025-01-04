@@ -14,6 +14,7 @@ import Nav from './components/Nav'
 import CreatePortfolio from './pages/owner/CreatePortfolio';
 import AddProperty from './pages/owner/AddProperty';
 import DisplayPortfolio from './pages/owner/DIsplayPortfolio';
+import AllPropsInPort from './pages/owner/AllPropsInPort';
 
 
 
@@ -83,15 +84,15 @@ export default function App() {
 
   useEffect(() => {
     isAuthOwner();
-  }, []);
+  });
 
   useEffect(() => {
     isAuthTenant();
-  }, []);
+  });
 
   useEffect(() => {
     isAuthManager();
-  }, []);
+  });
 
   return (
     <Fragment>
@@ -122,29 +123,29 @@ export default function App() {
         
             <Route 
               path="/tenant-login" 
-              element={isAuthenticatedTenant ? (<TenantHome setAuth={setAuthTenant}/>) : 
+              element={isAuthenticatedTenant ? (<Navigate to='/tenant-home'/>) : 
                                         (<SignIn setAuth={setAuthTenant} s_url="http://localhost:5000/auth/tenant-login" bottom_link="../tenant-registration" title="Tenant Login" submit_redirect="../tenant/TenantHome"/>)}/>
 
             <Route 
               path="/owner-login" 
-              element={isAuthenticatedOwner ? (<OwnerHome setAuth={setAuthOwner}/>) : 
+              element={isAuthenticatedOwner ? (<Navigate to="/owner-home"/>) : 
                                         (<SignIn setAuth={setAuthOwner} s_url="http://localhost:5000/auth/owner-login" bottom_link="../owner-registration" title="Owner Login" submit_redirect="../owner/OwnerHome"/>)}/>
 
             <Route 
               path="/manager-login" 
-              element={isAuthenticatedManager ? (<ManagerHome setAuth={setAuthManager}/>) : 
+              element={isAuthenticatedManager ? (<Navigate to="/manager-home"/>) : 
                                         (<SignIn setAuth={setAuthManager} s_url="http://localhost:5000/auth/manager-login" bottom_link="../manager-registration" title="Manager Login" submit_redirect="../owner/ManagerHome"/>)}/>
             <Route 
               path="/tenant-registration" 
-              element={isAuthenticatedTenant ? (<TenantHome setAuth={setAuthTenant}/>) : 
+              element={isAuthenticatedTenant ? (<Navigate to='/tenant-home'/>) : 
                                         (<SignUp setAuth={setAuthTenant} s_url="http://localhost:5000/auth/tenant-registration" bottom_link="../tenant-login" title="Tenant Registration" submit_redirect="../tenant-login"/>)}/>  
             <Route 
               path="/owner-registration" 
-              element={isAuthenticatedOwner ? (<OwnerHome setAuth={setAuthOwner}/>) : 
+              element={isAuthenticatedOwner ? (<Navigate to="/owner-home"/>) : 
                                         (<SignUp setAuth={setAuthOwner} s_url="http://localhost:5000/auth/owner-registration" bottom_link="../owner-login" title="Owner Registration" submit_redirect="../owner-login"/>)}/>
             <Route 
               path="/manager-registration" 
-              element={isAuthenticatedManager ? (<ManagerHome setAuth={setAuthManager}/>) : 
+              element={isAuthenticatedManager ? (<Navigate to="/manager-home"/>) : 
                                         (<SignUp setAuth={setAuthManager} s_url="http://localhost:5000/auth/manager-registration" bottom_link="../manager-login" title="Manager Registration" submit_redirect="../manager-login"/>)}/>                                                     
 
             <Route 
@@ -160,6 +161,12 @@ export default function App() {
             <Route
             path="/portfolio/:p_name"
             element={isAuthenticatedOwner ? (<DisplayPortfolio/>) : (<Navigate to="/owner-login" setAuth={setAuthOwner}/>)}/>
+
+            <Route 
+            path="/portfolios"
+            element={isAuthenticatedOwner || isAuthenticatedManager ? (<AllPropsInPort/>) : (<Navigate to="/owner-login" setAuth={setAuthOwner}/>)}
+            
+            />
 
             <Route 
               path="/About" 
